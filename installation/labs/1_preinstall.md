@@ -93,4 +93,186 @@ Name:   ec2-18-221-223-153.us-east-2.compute.amazonaws.com
 Address: 172.31.1.21
 
 
+--nscd
+
+
+[root@ip-172-31-13-233 /]# service nscd status
+Redirecting to /bin/systemctl status  nscd.service
+● nscd.service - Name Service Cache Daemon
+   Loaded: loaded (/usr/lib/systemd/system/nscd.service; enabled; vendor preset: disabled)
+   Active: active (running) since Mon 2017-10-02 15:20:43 EDT; 1min 9s ago
+ Main PID: 3638 (nscd)
+   CGroup: /system.slice/nscd.service
+           └─3638 /usr/sbin/nscd
+
+Oct 02 15:20:43 ip-172-31-13-233 nscd[3638]: 3638 monitoring directory `/etc` (2)
+Oct 02 15:20:43 ip-172-31-13-233 nscd[3638]: 3638 monitoring file `/etc/resolv.conf` (5)
+Oct 02 15:20:43 ip-172-31-13-233 nscd[3638]: 3638 monitoring directory `/etc` (2)
+Oct 02 15:20:43 ip-172-31-13-233 nscd[3638]: 3638 monitoring file `/etc/services` (6)
+Oct 02 15:20:43 ip-172-31-13-233 nscd[3638]: 3638 monitoring directory `/etc` (2)
+Oct 02 15:20:43 ip-172-31-13-233 nscd[3638]: 3638 disabled inotify-based monitoring for file `/etc/netgroup': No such file ...ectory
+Oct 02 15:20:43 ip-172-31-13-233 nscd[3638]: 3638 stat failed for file `/etc/netgroup'; will try again later: No such file ...ectory
+Oct 02 15:20:43 ip-172-31-13-233 nscd[3638]: 3638 Access Vector Cache (AVC) started
+Oct 02 15:20:43 ip-172-31-13-233 systemd[1]: Started Name Service Cache Daemon.
+Oct 02 15:21:02 ip-172-31-13-233 nscd[3638]: 3638 checking for monitored file `/etc/netgroup': No such file or directory
+Hint: Some lines were ellipsized, use -l to show in full.
+
+
+--ntpd
+[root@ip-172-31-9-121 /]# service ntpd status
+Redirecting to /bin/systemctl status  ntpd.service
+● ntpd.service - Network Time Service
+   Loaded: loaded (/usr/lib/systemd/system/ntpd.service; disabled; vendor preset: disabled)
+   Active: active (running) since Mon 2017-10-02 15:28:14 EDT; 8s ago
+  Process: 3200 ExecStart=/usr/sbin/ntpd -u ntp:ntp $OPTIONS (code=exited, status=0/SUCCESS)
+ Main PID: 3201 (ntpd)
+   CGroup: /system.slice/ntpd.service
+           └─3201 /usr/sbin/ntpd -u ntp:ntp -g
+
+Oct 02 15:28:14 ip-172-31-9-121 ntpd[3201]: Listen normally on 2 lo 127.0.0.1 UDP 123
+Oct 02 15:28:14 ip-172-31-9-121 ntpd[3201]: Listen normally on 3 eth0 172.31.9.121 UDP 123
+Oct 02 15:28:14 ip-172-31-9-121 ntpd[3201]: Listen normally on 4 lo ::1 UDP 123
+Oct 02 15:28:14 ip-172-31-9-121 ntpd[3201]: Listen normally on 5 eth0 fe80::33:62ff:fe36:3df6 UDP 123
+Oct 02 15:28:14 ip-172-31-9-121 ntpd[3201]: Listening on routing socket on fd #22 for interface updates
+Oct 02 15:28:14 ip-172-31-9-121 systemd[1]: Started Network Time Service.
+Oct 02 15:28:14 ip-172-31-9-121 ntpd[3201]: 0.0.0.0 c016 06 restart
+Oct 02 15:28:14 ip-172-31-9-121 ntpd[3201]: 0.0.0.0 c012 02 freq_set kernel 0.000 PPM
+Oct 02 15:28:14 ip-172-31-9-121 ntpd[3201]: 0.0.0.0 c011 01 freq_not_set
+Oct 02 15:28:21 ip-172-31-9-121 ntpd[3201]: 0.0.0.0 c614 04 freq_mode
+
+
+--instalacion base de datos
+yum install mariadb-server 
+mkdir -p /bkp/mariadb
+mv /var/lib/mysql/ib_logfile0 /bkp/mariadb 
+mv /var/lib/mysql/ib_logfile1 /bkp/mariadb
+
+[root@ip-172-31-9-121 ec2-user]# systemctl list-unit-files | grep mariadb
+mariadb.service                             enabled
+
+--
+Remove anonymous users? [Y/n] y
+ ... Success!
+
+Normally, root should only be allowed to connect from 'localhost'.  This
+ensures that someone cannot guess at the root password from the network.
+
+Disallow root login remotely? [Y/n] n
+ ... skipping.
+
+By default, MariaDB comes with a database named 'test' that anyone can
+access.  This is also intended only for testing, and should be removed
+before moving into a production environment.
+
+Remove test database and access to it? [Y/n] y
+ - Dropping test database...
+ ... Success!
+ - Removing privileges on test database...
+ ... Success!
+
+Reloading the privilege tables will ensure that all changes made so far
+will take effect immediately.
+
+Reload privilege tables now? [Y/n] y
+ ... Success!
+
+Cleaning up...
+
+All done!  If you've completed all of the above steps, your MariaDB
+installation should now be secure.
+
+Thanks for using MariaDB!
+--creacion bases de dato
+
+MariaDB [(none)]> grant all on amon.* TO 'amon'@'%' IDENTIFIED BY 'amon_password';
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [(none)]> create database rman DEFAULT CHARACTER SET utf8;
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [(none)]> grant all on rman.* TO 'rman'@'%' IDENTIFIED BY 'rman_password';
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [(none)]> create database metastore DEFAULT CHARACTER SET utf8;
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [(none)]> grant all on metastore.* TO 'hive'@'%' IDENTIFIED BY 'hive_password';
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [(none)]> create database sentry DEFAULT CHARACTER SET utf8;
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [(none)]> grant all on sentry.* TO 'sentry'@'%' IDENTIFIED BY 'sentry_password';
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [(none)]> create database nav DEFAULT CHARACTER SET utf8;
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [(none)]> grant all on nav.* TO 'nav'@'%' IDENTIFIED BY 'nav_password';
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [(none)]> create database navms DEFAULT CHARACTER SET utf8;
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [(none)]> grant all on navms.* TO 'navms'@'%' IDENTIFIED BY 'navms_password';
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [(none)]> create database cmf DEFAULT CHARACTER SET utf8;
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [(none)]> grant all on cmf.* TO 'cmf'@'%' IDENTIFIED BY 'cmf_password';
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [(none)]> create database hue DEFAULT CHARACTER SET utf8;
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [(none)]> grant all on hue.* TO 'hue'@'%' IDENTIFIED BY 'hue_password';
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [(none)]> create database oozie DEFAULT CHARACTER SET utf8;
+Query OK, 1 row affected (0.00 sec)
+
+MariaDB [(none)]> grant all on oozie.* TO 'oozie'@'%' IDENTIFIED BY 'oozie_password';
+Query OK, 0 rows affected (0.00 sec)
+
+MariaDB [(none)]> exit;
+
+--Driver
+
+[root@ip-172-31-9-121 /]# cd mysql-connector-java-5.1.44
+[root@ip-172-31-9-121 mysql-connector-java-5.1.44]# ls
+build.xml  CHANGES  COPYING  mysql-connector-java-5.1.44-bin.jar  README  README.txt  src
+[root@ip-172-31-9-121 mysql-connector-java-5.1.44]# cp mysql-connector-java-5.1.44-bin.jar /usr/share/java/mysql-connector-java.jar
+[root@ip-172-31-9-121 mysql-connector-java-5.1.44]#
+
+--preparar base
+[root@ip-172-31-9-121 /]# /usr/share/cmf/schema/scm_prepare_database.sh mysql cmf cmf cmf_password
+JAVA_HOME=/opt/jdk1.8.0_131
+Verifying that we can write to /etc/cloudera-scm-server
+Creating SCM configuration file in /etc/cloudera-scm-server
+Executing:  /opt/jdk1.8.0_131/bin/java -cp /usr/share/java/mysql-connector-java.jar:/usr/share/java/oracle-connector-java.jar:/usr/share/cmf/schema/../lib/* com.cloudera.enterprise.dbutil.DbCommandExecutor /etc/cloudera-scm-server/db.properties com.cloudera.cmf.db.
+[                          main] DbCommandExecutor              INFO  Successfully connected to database.
+All done, your SCM database is configured correctly!
+[root@ip-172-31-9-121 /]#
+
+--Instalar JKD
+
+cd /opt/
+wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.tar.gz"
+tar xzf jdk-8u131-linux-x64.tar.gz
+
+alternatives --install /usr/bin/java java /opt/jdk1.8.0_131/bin/java 2
+alternatives --config java
+ 
+There is 1 program that provides 'java'.
+ 
+  Selection    Command
+-----------------------------------------------
+*+ 1           /opt/jdk1.8.0_131/bin/java
+ 
+Enter to keep the current selection[+], or type selection number: 1
+
+
+
+
 
