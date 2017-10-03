@@ -273,6 +273,27 @@ There is 1 program that provides 'java'.
 Enter to keep the current selection[+], or type selection number: 1
 
 
+#Se inicia instalación de cloudera-scm-server y clodera-scm-agent
+
+
+[root@ip-172-31-26-69 ec2-user]# service cloudera-scm-server status
+● cloudera-scm-server.service - LSB: Cloudera SCM Server
+   Loaded: loaded (/etc/rc.d/init.d/cloudera-scm-server; bad; vendor preset: disabled)
+   Active: active (exited) since Mon 2017-10-02 22:21:24 EDT; 1h 3min ago
+     Docs: man:systemd-sysv-generator(8)
+
+
+[root@ip-172-31-26-66 ec2-user]# service cloudera-scm-agent status
+● cloudera-scm-agent.service - LSB: Cloudera SCM Agent
+   Loaded: loaded (/etc/rc.d/init.d/cloudera-scm-agent; bad; vendor preset: disabled)
+   Active: active (exited) since Mon 2017-10-02 22:31:47 EDT; 54min ago
+     Docs: man:systemd-sysv-generator(8)
+  Process: 11676 ExecStart=/etc/rc.d/init.d/cloudera-scm-agent start (code=exited, status=0/SUCCESS)
+
+Oct 02 22:31:46 ip-172-31-26-66 systemd[1]: Starting LSB: Cloudera SCM Agent...
+Oct 02 22:31:46 ip-172-31-26-66 su[11689]: (to root) root on none
+Oct 02 22:31:47 ip-172-31-26-66 cloudera-scm-agent[11676]: Starting cloudera-scm-agent: [  OK  ]
+Oct 02 22:31:47 ip-172-31-26-66 systemd[1]: Started LSB: Cloudera SCM Agent.
 
 
 
