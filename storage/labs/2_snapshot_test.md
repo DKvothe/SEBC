@@ -22,3 +22,9 @@ rm: Failed to move to trash: hdfs://ip-172-31-26-66.us-east-2.compute.internal:8
 
 [root@ip-172-31-28-197 ec2-user]# hdfs dfs -rm /precious/SEBC-master-students.zip
 17/10/03 11:22:15 INFO fs.TrashPolicyDefault: Moved: 'hdfs://ip-172-31-26-66.us-east-2.compute.internal:8020/precious/SEBC-master-students.zip' to trash at: hdfs://ip-172-31-26-66.us-east-2.compute.internal:8020/user/hdfs/.Trash/Current/precious/SEBC-master-students.zip
+
+--Creacion de directorios para Journal node
+
+mkdir -p /disco2/jn 
+chown hdfs:hadoop /disco2/jn
+chmod 700 /disco2/jn
