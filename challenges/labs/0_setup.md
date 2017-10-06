@@ -3,13 +3,12 @@
 AWS
 
 ##instances by IP address and DNS name privados
-
-	  DNS														IP
--ip-172-31-35-27.us-east-2.compute.internal			  172.31.35.27
--ip-172-31-33-123.us-east-2.compute.internal			172.31.33.123
--ip-172-31-42-135.us-east-2.compute.internal			172.31.42.135
--ip-172-31-43-186.us-east-2.compute.internal			172.31.43.186
--ip-172-31-36-67.us-east-2.compute.internal			  172.31.36.67
+	DNS								IP
+ip-172-31-35-152.us-east-2.compute.internal			172.31.35.152
+ip-172-31-33-123.us-east-2.compute.internal			172.31.33.123
+ip-172-31-42-135.us-east-2.compute.internal			172.31.42.135
+ip-172-31-43-186.us-east-2.compute.internal			172.31.43.186
+ip-172-31-36-67.us-east-2.compute.internal			172.31.36.67
 
 ##Linux release
 
